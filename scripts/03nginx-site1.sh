@@ -3,4 +3,4 @@ if [ ! -f "$0.done" ]; then
     cp welcome /etc/nginx/sites-available/welcome
     systemctl restart nginx
     touch "$0.done"
-fi`
+fi
