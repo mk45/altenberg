@@ -1,19 +1,21 @@
-proxy_cache_path /ramcache keys_zone=ocache:20m max_size=100m inactive=60m use_temp_path=off;
+proxy_cache_path /ramcache keys_zone=ocache:20m max_size=100m inactive=5m use_temp_path=off;
 # Default server configuration
 #
 server {
         listen 80 ;
         listen [::]:80 ;
-        server_name altenberg.pl;
+        server_name altenberg.pl *.altenberg.pl;
         location /wp-admin/ {
-                proxy_pass http://wordpress-altenberg-vm/;
+                proxy_set_header Host $host;
+                proxy_pass http://altenberg-vm/wp-admin/;
         }
         location / {
+                proxy_set_header Host $host;
                 proxy_cache ocache;
-                proxy_cache_valid 200 10m;
+                proxy_cache_valid 200 5m;
                 proxy_cache_lock on;
                 proxy_cache_key $host$uri$is_args$args;
                 proxy_ignore_headers Cache-Control;
-                proxy_pass http://wordpress-altenberg-vm/;
+                proxy_pass http://altenberg-vm/;
         }
 }
