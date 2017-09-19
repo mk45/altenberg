@@ -10,7 +10,7 @@ server {
                 allow 35.198.77.83;
                 deny all;
                 proxy_set_header Host $host;
-                proxy_pass http://altenberg-vm/;
+                proxy_pass http://altenberg-vm;
         }
         
         location / {
@@ -20,6 +20,6 @@ server {
                 proxy_cache_lock on;
                 proxy_cache_key $host$uri$is_args$args;
                 proxy_ignore_headers Cache-Control;
-                proxy_pass http://altenberg-vm/;
+                proxy_pass http://altenberg-vm;
         }
 }
