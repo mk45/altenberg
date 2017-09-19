@@ -1,4 +1,4 @@
-proxy_cache_path /ramcache keys_zone=ocache:20m max_size=300m inactive=5m use_temp_path=off;
+proxy_cache_path /ramcache keys_zone=ocache:20m max_size=300m inactive=500m use_temp_path=off;
 # Default server configuration
 #
 server {
@@ -6,15 +6,17 @@ server {
         listen [::]:80 ;
         server_name altenberg.pl *.altenberg.pl;
         # wp-admin may proceed without cache
-        location /wp-admin/ {
+        location ~ ^/(wp-admin|wp-login\.php) {
+                allow 35.198.77.83;
+                deny all;
                 proxy_set_header Host $host;
-                proxy_pass http://altenberg-vm/wp-admin/;
+                proxy_pass http://altenberg-vm/;
         }
         
         location / {
                 proxy_set_header Host $host;
                 proxy_cache ocache;
-                proxy_cache_valid 200 5m;
+                proxy_cache_valid 200 500m;
                 proxy_cache_lock on;
                 proxy_cache_key $host$uri$is_args$args;
                 proxy_ignore_headers Cache-Control;
